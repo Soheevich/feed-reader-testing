@@ -50,6 +50,7 @@ $(
       });
     });
 
+
     describe('The menu', function () {
       const body = document.body;
 
@@ -58,7 +59,7 @@ $(
        * the CSS to determine how we're performing the
        * hiding/showing of the menu element.
        */
-      it('in hidden by default', function () {
+      it('is hidden by default', function () {
         expect(body).toHaveClass('menu-hidden');
       });
 
@@ -78,30 +79,56 @@ $(
       });
     });
 
-    describe('Initial Entries', function () {
-      const body = document.body;
 
+    describe('Initial Entries', function () {
       /* This test ensures when the loadFeed
        * function is called and completes its work, there is at least
        * a single .entry element within the .feed container.
        * Remember, loadFeed() is asynchronous so this test will require
        * the use of Jasmine's beforeEach and asynchronous done() function.
        */
-      it('in hidden by default', function () {
-        expect(body).toHaveClass('menu-hidden');
+      let entries;
+
+      beforeEach(function (done) {
+        loadFeed(0, function() {
+          entries = document.querySelectorAll('.feed .entry-link');
+          done();
+        });
+      });
+
+      it('total amount is greater than 0', function (done) {
+        expect(entries.length).toBeGreaterThan(0);
+        done();
       });
     });
 
 
     describe('New Feed Selection', function () {
-      const body = document.body;
-
-      /* TODO: Write a test that ensures when a new feed is loaded
+      /* This test ensures when a new feed is loaded
        * by the loadFeed function that the content actually changes.
        * Remember, loadFeed() is asynchronous.
        */
-      it('in hidden by default', function () {
-        expect(body).toHaveClass('menu-hidden');
+      let feed0;
+      let feed1;
+
+      beforeEach(function (done) {
+        loadFeed(0, function () {
+          const entries = document.querySelectorAll('.feed .entry-link');
+          feed0 = Array.from(entries);
+          done();
+        });
+
+        loadFeed(1, function () {
+          const entries = document.querySelectorAll('.feed .entry-link');
+          feed1 = Array.from(entries);
+          done();
+        });
+      });
+
+      // Compare every feed with other feeds
+      it('the content actually changes', function (done) {
+        expect(feed0).not.toEqual(feed1);
+        done();
       });
     });
   })()
