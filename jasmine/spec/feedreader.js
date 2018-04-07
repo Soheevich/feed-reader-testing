@@ -91,7 +91,7 @@ $(
 
       beforeEach(function (done) {
         loadFeed(0, function() {
-          entries = document.querySelectorAll('.feed .entry-link');
+          entries = document.querySelectorAll('.feed .entry');
           done();
         });
       });
@@ -113,16 +113,16 @@ $(
 
       beforeEach(function (done) {
         loadFeed(0, function () {
-          const entries = document.querySelectorAll('.feed .entry-link');
-          feed0 = Array.from(entries);
-          if (Array.isArray(feed1)) done();
+          const entries = document.querySelectorAll('.feed .entry');
+          feed0 = Array.from(entries, entry => entry.innerHTML);
+
+          loadFeed(1, function () {
+            const entries = document.querySelectorAll('.feed .entry');
+            feed1 = Array.from(entries, entry => entry.innerHTML);
+            done();
+          });
         });
 
-        loadFeed(1, function () {
-          const entries = document.querySelectorAll('.feed .entry-link');
-          feed1 = Array.from(entries);
-          if (Array.isArray(feed0)) done();
-        });
       });
 
       // Compare every feed with other feeds
