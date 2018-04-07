@@ -115,13 +115,13 @@ $(
         loadFeed(0, function () {
           const entries = document.querySelectorAll('.feed .entry-link');
           feed0 = Array.from(entries);
-          done();
+          if (Array.isArray(feed1)) done();
         });
 
         loadFeed(1, function () {
           const entries = document.querySelectorAll('.feed .entry-link');
           feed1 = Array.from(entries);
-          done();
+          if (Array.isArray(feed0)) done();
         });
       });
 
